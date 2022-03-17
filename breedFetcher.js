@@ -1,22 +1,22 @@
 const breed = process.argv[2]
 const request = require('request');
-request(`https://api.thecatapi.com/v1/breeds/search?q=${breed}`, (error, response, body) => {
-  const data = JSON.parse(body)
-
-  // request.use((req, res, next) => {
-  //   res.status(404).send({
-  //   status: 404,
-  //   error: ‘PAGE NOT FOUND’
-  //   })
-  //  })
-
-  if (data.length !== 0) {
-    console.log('statusCode:', response && response.statusCode);
-    console.log('data:', data);
-    // console.log(typeof data);
+const URL = 'https://api.thecatapi.com/v1/breeds/search?q=${breed}'
+request(URL, (error, response, body) => {
+  if(error){
+    console.log('Error 404: Wrong URL!!!...Meow');
+    return
   }
-  else {
-    console.log(error, `There is no CAT breed ${breed}....Meow`);
-  }
+  const data = JSON.parse(body); 
+    if (data.length !== 0) {
+      console.log('statusCode:', response && response.statusCode);
+      console.log('data:', data);
+      // console.log(typeof data);
+    } 
+    else if(breed === undefined){
+    console.log('Error 400:', `Type the breed....Meow`);
+    }
+    else if (data.length === 0) {
+      console.log('Error 204:', `There is no CAT breed called ${breed}....Meow`);
+    } 
 });
 
